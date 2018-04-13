@@ -38,14 +38,19 @@ public class MyArrayList<T> implements List<T> {
 		mal.add(3);
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 
-		mal.remove(new Integer(2));
+		mal.remove(Integer.valueOf(2));
 		System.out.println(Arrays.toString(mal.toArray()) + " size = " + mal.size);
 	}
 
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+		if(size >= array.length) {
+			array = Arrays.copyOf(array, array.length * 2);
+		}
+		array[size] = element;
+        size++;
+
+		return true;
 	}
 
 	@Override
@@ -110,8 +115,13 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
-		return -1;
+		for(int index = 0; index < size; index++) {
+		    if(array[index] == target || array[index].equals(target)) {
+		        return index;
+            }
+        }
+
+        return -1;
 	}
 
 	/** Checks whether an element of the array is the target.
@@ -119,7 +129,7 @@ public class MyArrayList<T> implements List<T> {
 	 * Handles the special case that the target is null.
 	 *
 	 * @param target
-	 * @param object
+	 * @param element
 	 */
 	private boolean equals(Object target, Object element) {
 		if (target == null) {
@@ -181,8 +191,13 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+        T removed = get(index);
+
+        for(int i = index; i < size - 1; i++) {
+            array[i] = array[i+ 1];
+        }
+        size--;
+        return removed;
 	}
 
 	@Override
@@ -201,8 +216,11 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+        T old = get(index);
+
+        array[index] = element;
+
+		return old;
 	}
 
 	@Override
