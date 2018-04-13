@@ -62,7 +62,7 @@ public class MyLinkedList<E> implements List<E> {
 		mll.add(3);
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 
-		mll.remove(new Integer(2));
+		mll.remove(Integer.valueOf(2));
 		System.out.println(Arrays.toString(mll.toArray()) + " size = " + mll.size());
 	}
 
@@ -82,7 +82,21 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public void add(int index, E element) {
-		//TODO: FILL THIS IN!
+        Node newNode = new Node(element);
+        if(head == null) {
+            head = newNode;
+        }
+
+        size++;
+
+		if(index == 0) {
+		    newNode.next = head;
+		    head = newNode;
+        } else {
+		    Node prev = getNode(index - 1);
+		    newNode.next = prev.next;
+		    prev.next = newNode;
+        }
 	}
 
 	@Override
@@ -143,8 +157,14 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		//TODO: FILL THIS IN!
-		return -1;
+		Node node = head;
+		for(int index = 0; index < size; index++, node = node.next) {
+		    if(equals(node.data, target)) {
+		        return index;
+            }
+        }
+
+        return -1;
 	}
 
 	/** Checks whether an element of the array is the target.
@@ -152,7 +172,7 @@ public class MyLinkedList<E> implements List<E> {
 	 * Handles the special case that the target is null.
 	 *
 	 * @param target
-	 * @param object
+	 * @param element
 	 */
 	private boolean equals(Object target, Object element) {
 		if (target == null) {
@@ -208,8 +228,18 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		//TODO: FILL THIS IN!
-		return null;
+        Node toRemove = getNode(index);
+
+        size--;
+
+        if(index == 0) {
+            head = head.next;
+        } else {
+            Node prev = getNode(index - 1);
+            prev.next = toRemove.next;
+        }
+
+        return toRemove.data;
 	}
 
 	@Override
